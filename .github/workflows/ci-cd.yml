@@ -12,18 +12,20 @@ permissions:
   security-events: write
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/cloudopshub
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/cloudopshub-devops-platform
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: pytest -q
+      - run: python -m pytest -q
 
   docker-lint:
     runs-on: ubuntu-latest
