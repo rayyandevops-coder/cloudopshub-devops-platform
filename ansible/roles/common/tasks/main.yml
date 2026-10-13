@@ -1,0 +1,30 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install operational packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - git
+      - ca-certificates
+      - jq
+      - unzip
+      - htop
+    state: present
+
+- name: Create application directory
+  ansible.builtin.file:
+    path: /opt/cloudopshub
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Enable time synchronization
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    state: started
+    enabled: true

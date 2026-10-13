@@ -1,0 +1,6 @@
+---
+- name: Prepare Linux host for CloudOpsHub
+  hosts: k8s
+  become: true
+  roles:
+    - common

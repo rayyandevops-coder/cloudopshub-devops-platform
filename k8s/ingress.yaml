@@ -1,0 +1,18 @@
+﻿apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cloudopshub-ingress
+  namespace: cloudpulse
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: cloudopshub.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cloudpulse-api
+                port:
+                  number: 8000

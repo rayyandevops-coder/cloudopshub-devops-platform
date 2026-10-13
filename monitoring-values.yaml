@@ -1,0 +1,25 @@
+server:
+  persistentVolume:
+    enabled: false
+  retention: "6h"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+alertmanager:
+  enabled: false
+pushgateway:
+  enabled: false
+kube-state-metrics:
+  enabled: false
+prometheus-node-exporter:
+  enabled: false
+extraScrapeConfigs: |
+  - job_name: cloudopshub-api
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - cloudpulse-api.cloudpulse.svc.cluster.local:8000

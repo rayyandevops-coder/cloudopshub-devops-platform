@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudpulse-worker
+  namespace: cloudpulse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudpulse-worker
+  template:
+    metadata:
+      labels:
+        app: cloudpulse-worker
+    spec:
+      containers:
+        - name: worker
+          image: cloudpulse:0.1.0
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "app.worker.main"]
+          envFrom:
+            - configMapRef:
+                name: cloudpulse-config
+          resources:
+            requests:
+              cpu: 50m
+              memory: 96Mi
+            limits:
+              cpu: 250m
+              memory: 192Mi

@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudpulse-api
+  namespace: cloudpulse
+  labels:
+    app: cloudpulse-api
+spec:
+  type: ClusterIP
+  selector:
+    app: cloudpulse-api
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudpulse-api
+  namespace: cloudpulse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudpulse-api
+  template:
+    metadata:
+      labels:
+        app: cloudpulse-api
+    spec:
+      containers:
+        - name: api
+          image: cloudpulse:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: cloudpulse-config
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 384Mi
