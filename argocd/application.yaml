@@ -6,13 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/YOUR_GITHUB_USERNAME/cloudopshub-devops-platform.git
+    repoURL: https://github.com/rayyandevops-coder/cloudopshub-devops-platform.git
     targetRevision: main
     path: helm/cloudopshub
     helm:
       values: |
         image:
-          repository: ghcr.io/YOUR_GITHUB_USERNAME/cloudopshub-devops-platform
+          repository: ghcr.io/rayyandevops-coder/cloudopshub-devops-platform
           tag: latest
   destination:
     server: https://kubernetes.default.svc
